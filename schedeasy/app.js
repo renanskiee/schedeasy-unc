@@ -18,7 +18,7 @@ const profileFields = [
 function minutesToDisplay(minutes) {
   const hour = Math.floor(minutes / 60);
   const minute = minutes % 60;
-  return `${hour > 12 ? hour - 12 : (hour === 0 ? 12 : hour)}:${String(minute).padStart(2, '0')} ${hour >= 12 ? 'PM' : 'AM'}`;
+  return `${hour > 12 ? hour - 12 : hour}:${String(minute).padStart(2, '0')} ${hour >= 12 ? 'PM' : 'AM'}`;
 }
 
 function timeToMinutes(value) {
@@ -107,21 +107,19 @@ function setPrintLayout() {
   document.body.classList.toggle('print-portrait', layout !== 'landscape');
 
   document.querySelector('#print-page-style').textContent =
-    `@page { size: ${layout}; margin: 8mm; }`;
+    `@page { size: ${layout}; margin: 10mm; }`;
 }
 
 function updatePrintProfile() {
   document.querySelector('#print-name').textContent =
-    getProfile('student-name') || 'Student Schedule';
+    getProfile('student-name') || 'Student schedule';
 
-  const details = [
-    getProfile('student-course'),
-    getProfile('student-year'),
-    getProfile('student-semester')
-  ].filter(Boolean).join(' · ');
-
-  document.querySelector('#print-details').textContent =
-    details || 'Course · Year & Section · Semester';
+  document.querySelector('#print-course').textContent =
+    [
+      getProfile('student-course'),
+      getProfile('student-year'),
+      getProfile('student-semester')
+    ].filter(Boolean).join(' · ') || 'Course · Year & section · Semester';
 
   setPrintLayout();
 }
@@ -136,15 +134,19 @@ function saveProfile() {
 }
 
 function meetingHtml(item, meeting) {
+  const meetLink = item.meetLink
+    ? `<a href="${escapeHtml(item.meetLink)}" target="_blank" rel="noopener">Google Meet ↗</a>`
+    : '';
+
   const mode = item.delivery === 'Online'
     ? '<em>Online</em>'
     : (item.room ? `<em>${escapeHtml(item.room)}</em>` : '');
 
   return `
-    <article class="schedule-entry">
+    <article class="schedule-entry" style="--subject-color:${item.color}">
       <span class="entry-time">${minutesToDisplay(meeting.start)} – ${minutesToDisplay(meeting.end)}</span>
       <span class="entry-subject"><strong>${escapeHtml(item.code)}</strong> ${escapeHtml(item.name)}</span>
-      <span class="entry-mode">${mode}</span>
+      <span class="entry-mode">${mode}${meetLink}</span>
     </article>
   `;
 }
@@ -197,7 +199,7 @@ function render() {
     ? classes.map((item, index) => `
         <div class="class-item">
           <div class="class-meta">
-            <i class="unc-bullet"></i>
+            <i class="color-dot" style="background:${item.color}"></i>
             <div>
               <strong>${escapeHtml(item.code)} — ${escapeHtml(item.name)}</strong>
               <p>
@@ -241,7 +243,8 @@ form.addEventListener('submit', event => {
       room: document.querySelector('#room').value.trim(),
       instructor: document.querySelector('#instructor').value.trim(),
       delivery,
-      meetLink: document.querySelector('#meet-link').value.trim()
+      meetLink: document.querySelector('#meet-link').value.trim(),
+      color: document.querySelector('#color').value
     });
 
     error.textContent = '';
@@ -251,6 +254,7 @@ form.addEventListener('submit', event => {
 
     document.querySelector('input[name="delivery"][value="On-campus"]').checked = true;
     document.querySelector('#meet-field').hidden = true;
+    document.querySelector('#color').value = '#2563eb';
 
     render();
   } catch (err) {

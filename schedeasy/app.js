@@ -407,3 +407,44 @@ profileFields.forEach(id=>{
 updateProfile();
 toggleMeetField();
 render();
+
+const feedbackModal = document.querySelector('#feedback-modal');
+
+document.querySelector('#feedback-button').addEventListener('click', () => {
+  feedbackModal.hidden = false;
+  document.querySelector('#feedback-message').focus();
+});
+
+document.querySelector('#close-feedback-button').addEventListener('click', () => {
+  feedbackModal.hidden = true;
+});
+
+feedbackModal.addEventListener('click', event => {
+  if (event.target === feedbackModal) {
+    feedbackModal.hidden = true;
+  }
+});
+
+document.querySelector('#feedback-form').addEventListener('submit', event => {
+  event.preventDefault();
+
+  const name = document.querySelector('#feedback-name').value.trim() || 'Not provided';
+  const email = document.querySelector('#feedback-email').value.trim() || 'Not provided';
+  const rating = document.querySelector('#feedback-rating').value;
+  const message = document.querySelector('#feedback-message').value.trim();
+
+  const subject = encodeURIComponent('SchedEasy User Feedback');
+  const body = encodeURIComponent(
+    `SchedEasy Feedback\n\n` +
+    `Name: ${name}\n` +
+    `Email: ${email}\n` +
+    `Rating: ${rating}\n\n` +
+    `Feedback:\n${message}`
+  );
+
+  window.location.href =
+    `mailto:renan.alburo@unc.edu.ph?subject=${subject}&body=${body}`;
+
+  feedbackModal.hidden = true;
+  event.target.reset();
+});

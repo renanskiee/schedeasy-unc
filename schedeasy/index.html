@@ -1,133 +1,119 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="A simple weekly class schedule organizer for UNC students." />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>SchedEasy | UNC Class Schedule Organizer</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header class="hero">
-    <div class="brand-row">
-      <img class="app-logo" src="assets/schedeasy-logo.svg" alt="SchedEasy" />
-      <span class="brand-divider"></span>
-      <img class="unc-logo" src="assets/unc-seal.png" alt="University of Nueva Caceres seal" />
-      <div class="unc-name">
-        <strong>UNIVERSITY OF<br />NUEVA CACERES</strong>
-        <span>City of Naga, Philippines</span>
-      </div>
-    </div>
-    <div class="hero-copy">
-      <p class="eyebrow">STUDENT SCHEDULE PORTAL</p>
-      <p class="intro">Turn your matriculation details into a clean weekly schedule.</p>
-    </div>
-  </header>
+<header class="hero">
+  <div class="brand">
+    <img src="assets/schedeasy-logo.svg" class="app-logo" alt="SchedEasy">
+    <span class="divider"></span>
+    <img src="assets/unc-seal.png" class="unc-logo" alt="UNC">
+    <div><b>UNIVERSITY OF<br>NUEVA CACERES</b><small>City of Naga, Philippines</small></div>
+  </div>
+  <p>STUDENT SCHEDULE PORTAL</p>
+</header>
 
-  <main>
-    <section class="card form-card">
-      <div>
-        <p class="section-label">CREATE YOUR SCHEDULE</p>
-        <h2>Add a class</h2>
-        <p class="muted">Enter the details from your matriculation form.</p>
+<main>
+  <section class="panel form-panel">
+    <div>
+      <p class="red-label">CREATE YOUR SCHEDULE</p>
+      <h2>Student information</h2>
+      <p class="muted">Enter your details and class information from your matriculation form.</p>
+    </div>
+
+    <div>
+      <div class="student-fields">
+        <label>Student name<input id="student-name" placeholder="e.g., Juan Dela Cruz"></label>
+        <label>Course<input id="student-course" placeholder="e.g., BS Information Technology"></label>
+        <label>Year & section<input id="student-year" placeholder="e.g., Third Year – BSIT 3A"></label>
+        <label>Semester<select id="student-semester"><option>First Semester</option><option>Second Semester</option><option>Summer Term</option></select></label>
+        <label>Image layout<select id="image-layout"><option value="portrait">Portrait</option><option value="landscape">Landscape</option></select></label>
       </div>
 
-      <div>
-        <div class="student-fields">
-          <label>Student name
-            <input id="student-name" maxlength="80" placeholder="e.g., Juan Dela Cruz" />
+      <form id="class-form">
+        <div class="fields">
+          <label>Subject code<input id="code" required placeholder="e.g., IT 101"></label>
+          <label>Subject name<input id="name" required placeholder="e.g., Introduction to Computing"></label>
+          <label class="wide">Schedule from matriculation form
+            <input id="schedule-input" required placeholder="e.g., 10:00AM-11:30AM TTH">
+            <small>Multiple meetings: 08:00AM-11:00AM F; 11:00AM-01:00PM F</small>
           </label>
-          <label>Course
-            <input id="student-course" maxlength="100" placeholder="e.g., BS Information Technology" />
-          </label>
-          <label>Year & section
-            <input id="student-year" maxlength="50" placeholder="e.g., Third Year – BSIT 3A" />
-          </label>
-          <label>Semester
-            <select id="student-semester">
-              <option value="First Semester">First Semester</option>
-              <option value="Second Semester">Second Semester</option>
-              <option value="Summer Term">Summer Term</option>
-            </select>
-          </label>
-          <label>PDF layout
-            <select id="pdf-layout">
-              <option value="portrait">Portrait – one day per row</option>
-              <option value="landscape">Landscape – two-column cards</option>
+          <label>Room<input id="room" placeholder="e.g., Rm. 404"></label>
+          <label>Instructor<input id="instructor" placeholder="Optional"></label>
+          <fieldset>
+            <legend>Class type</legend>
+            <label class="radio"><input type="radio" name="delivery" value="On-campus" checked> On-campus</label>
+            <label class="radio"><input type="radio" name="delivery" value="Online"> Online</label>
+          </fieldset>
+          <label id="meet-field" hidden>Google Meet link<input id="meet-link" type="url" placeholder="Optional Google Meet link"></label>
+          <label>Card color
+            <select id="color">
+              <option value="#e51b23">UNC Red</option>
+              <option value="#4b4b4b">UNC Gray</option>
+              <option value="#ffffff">White</option>
             </select>
           </label>
         </div>
+        <p id="form-error" class="error"></p>
+        <button class="primary">Add to schedule</button>
+      </form>
+    </div>
+  </section>
 
-        <form id="class-form">
-          <div class="fields">
-            <label>Subject code
-              <input id="code" required maxlength="20" placeholder="e.g., IT 101" />
-            </label>
-            <label>Subject name
-              <input id="name" required maxlength="70" placeholder="e.g., Introduction to Computing" />
-            </label>
-            <label class="wide">Schedule from matriculation form
-              <input id="schedule-input" required placeholder="e.g., 10:00AM-11:30AM TTH" />
-              <span class="hint">Multiple meetings: <b>08:00AM-11:00AM F; 11:00AM-01:00PM F</b></span>
-            </label>
-            <label>Room
-              <input id="room" maxlength="35" placeholder="e.g., Rm. 404" />
-            </label>
-            <label>Instructor
-              <input id="instructor" maxlength="70" placeholder="Optional" />
-            </label>
-            <fieldset class="delivery">
-              <legend>Class type</legend>
-              <label class="radio"><input type="radio" name="delivery" value="On-campus" checked /> On-campus</label>
-              <label class="radio"><input type="radio" name="delivery" value="Online" /> Online</label>
-            </fieldset>
-            <label id="meet-field" hidden>Google Meet link
-              <input id="meet-link" type="url" maxlength="250" placeholder="Optional: https://meet.google.com/..." />
-            </label>
-            <label>Color
-              <input id="color" type="color" value="#2563eb" />
-            </label>
-          </div>
-          <p class="form-error" id="form-error"></p>
-          <button class="primary" type="submit">Add to schedule</button>
-        </form>
-      </div>
-    </section>
+  <section class="panel schedule-panel">
+    <div class="schedule-head">
+      <div><p class="red-label">WEEKLY VIEW</p><h2>My class schedule</h2></div>
+      <div><button id="download-button" class="primary" type="button">Download Schedule Image</button><button id="clear-button" class="text-button" type="button">Clear all</button></div>
+    </div>
+    <p id="conflict-notice" class="notice" hidden></p>
 
-    <section class="schedule-section">
-      <div class="print-header">
-        <img src="assets/schedeasy-logo.svg" alt="" />
+    <div id="printable-schedule">
+      <div class="schedule-image-header">
+        <img src="assets/schedeasy-logo.svg" alt="">
         <span></span>
-        <img src="assets/unc-seal.png" alt="" />
+        <img src="assets/unc-seal.png" alt="">
         <div>
-          <strong id="print-name">Student name</strong>
-          <small id="print-course">Course · Year & section · Semester</small>
+          <strong id="print-name">Name: Student name</strong>
+          <small id="print-course">Course: —</small>
+          <small id="print-year">Year & Section: —</small>
+          <small id="print-semester">Semester: —</small>
         </div>
       </div>
-
-      <div class="schedule-head">
-        <div>
-          <p class="section-label">WEEKLY VIEW</p>
-          <h2>My class schedule</h2>
-        </div>
-        <div class="actions">
-          <button id="download-button" class="secondary" type="button">Print / Save PDF</button>
-          <button id="clear-button" class="text-button" type="button">Clear all</button>
-        </div>
-      </div>
-
-      <p class="notice" id="conflict-notice" hidden></p>
       <div id="schedule" class="day-cards"></div>
-      <p id="empty-state" class="empty-state">No classes yet. Add one using the form above.</p>
-    </section>
+    </div>
 
-    <section class="class-list">
-      <h2>Class details</h2>
-      <div id="class-items"></div>
-    </section>
-  </main>
+    <p id="empty-state" class="muted center">No classes yet. Add one using the form above.</p>
+  </section>
 
-  <footer>Your data stays in this browser. No account or student number is required.Developed by: Renan S. Alburo</footer>
-  <script src="app.js"></script>
+  <section class="panel class-list"><h2>Class details</h2><div id="class-items"></div></section>
+</main>
+
+<footer class="developer-footer">
+  <div class="footer-wrap">
+    <div>
+      <img src="assets/schedeasy-logo.svg" class="footer-logo" alt="SchedEasy">
+      <p>A simple class schedule organizer made for UNC students.</p>
+    </div>
+    <div class="developer-card">
+      <img src="assets/developer-photo.jpg" class="developer-photo" alt="Developer photo">
+      <div>
+        <p class="developed-by">DEVELOPED BY</p>
+        <h3>RENAN S. ALBURO</h3>
+        <p>BS Information Technology · 4RTH YEAR </p>
+        <a href="mailto:renan.alburo@unc.edu.ph">✉ renan.alburo@unc.edu.ph / renanalburo2004@gmail.com</a>
+        <a href="tel:+639670492051">☎ 09670492051</a>
+        <a href="https://facebook.com/renanskieeeee" target="_blank">◉ Facebook Profile</a>
+      </div>
+    </div>
+  </div>
+  <small>© 2026 SchedEasy · Renan Alburo · University of Nueva Caceres</small>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="app.js"></script>
 </body>
 </html>

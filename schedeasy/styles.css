@@ -529,3 +529,28 @@ select:focus {
     margin: 0 0 0 74px;
   }
 }
+
+.form-buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.form-buttons .primary {
+  margin-top: 0;
+}
+
+.cancel-edit {
+  padding: 10px 14px;
+  cursor: pointer;
+  color: #555;
+  font: 700 0.9rem Arial, sans-serif;
+  background: #e7e7e7;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+}
+
+.cancel-edit:hover {
+  color: #fff;
+  background: #555;
+}

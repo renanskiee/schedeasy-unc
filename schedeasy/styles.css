@@ -198,7 +198,8 @@ select:focus {
 .primary,
 .secondary,
 .text-button,
-.delete {
+.delete,
+.edit {
   padding: 10px 14px;
   cursor: pointer;
   font: 700 0.9rem Arial, sans-serif;
@@ -206,13 +207,18 @@ select:focus {
   border-radius: 4px;
 }
 
-.primary {
-  margin-top: 12px;
+.primary,
+.edit {
   color: #fff;
   background: var(--red);
 }
 
-.primary:hover {
+.primary {
+  margin-top: 12px;
+}
+
+.primary:hover,
+.edit:hover {
   background: var(--dark-red);
 }
 
@@ -393,6 +399,11 @@ select:focus {
   margin: 2px 0 0;
   color: #666;
   font-size: 0.86rem;
+}
+
+.class-actions {
+  display: flex;
+  gap: 6px;
 }
 
 .developer-card {

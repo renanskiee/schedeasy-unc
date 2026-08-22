@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="A simple weekly class schedule organizer for UNC students." />
+  <meta name="description" content="A UNC-themed weekly class schedule organizer." />
   <title>SchedEasy | UNC Class Schedule Organizer</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -14,13 +14,14 @@
       <span class="brand-divider"></span>
       <img class="unc-logo" src="assets/unc-seal.png" alt="University of Nueva Caceres seal" />
       <div class="unc-name">
-        <strong>UNIVERSITY OF<br />NUEVA CACERES</strong>
+        <strong>UNIVERSITY OF<br>NUEVA CACERES</strong>
         <span>City of Naga, Philippines</span>
       </div>
     </div>
+
     <div class="hero-copy">
       <p class="eyebrow">STUDENT SCHEDULE PORTAL</p>
-      <p class="intro">Turn your matriculation details into a clean weekly schedule.</p>
+      <p>Make your weekly schedule clear, simple, and ready to share.</p>
     </div>
   </header>
 
@@ -28,80 +29,97 @@
     <section class="card form-card">
       <div>
         <p class="section-label">CREATE YOUR SCHEDULE</p>
-        <h2>Add a class</h2>
+        <h1>Add a class</h1>
         <p class="muted">Enter the details from your matriculation form.</p>
       </div>
 
       <div>
         <div class="student-fields">
-          <label>Student name
-            <input id="student-name" maxlength="80" placeholder="e.g., Juan Dela Cruz" />
+          <label>
+            Student name
+            <input id="student-name" maxlength="80" placeholder="e.g., Juan Dela Cruz">
           </label>
-          <label>Course
-            <input id="student-course" maxlength="100" placeholder="e.g., BS Information Technology" />
+
+          <label>
+            Course
+            <input id="student-course" maxlength="100" placeholder="e.g., BS Information Technology">
           </label>
-          <label>Year & section
-            <input id="student-year" maxlength="50" placeholder="e.g., Third Year – BSIT 3A" />
+
+          <label>
+            Year & section
+            <input id="student-year" maxlength="50" placeholder="e.g., Third Year – BSIT 3A">
           </label>
-          <label>Semester
+
+          <label>
+            Semester
             <select id="student-semester">
               <option value="First Semester">First Semester</option>
               <option value="Second Semester">Second Semester</option>
               <option value="Summer Term">Summer Term</option>
             </select>
           </label>
-          <label>PDF layout
-            <select id="pdf-layout">
-              <option value="portrait">Portrait – one day per row</option>
-              <option value="landscape">Landscape – two-column cards</option>
-            </select>
-          </label>
         </div>
 
         <form id="class-form">
           <div class="fields">
-            <label>Subject code
-              <input id="code" required maxlength="20" placeholder="e.g., IT 101" />
+            <label>
+              Subject code
+              <input id="code" required maxlength="20" placeholder="e.g., IT 101">
             </label>
-            <label>Subject name
-              <input id="name" required maxlength="70" placeholder="e.g., Introduction to Computing" />
+
+            <label>
+              Subject name
+              <input id="name" required maxlength="70" placeholder="e.g., Introduction to Computing">
             </label>
-            <label class="wide">Schedule from matriculation form
-              <input id="schedule-input" required placeholder="e.g., 10:00AM-11:30AM TTH" />
-              <span class="hint">Multiple meetings: <b>08:00AM-11:00AM F; 11:00AM-01:00PM F</b></span>
+
+            <label class="wide">
+              Schedule from matriculation form
+              <input id="schedule-input" required placeholder="e.g., 10:00AM-11:30AM TTH">
+              <span class="hint">
+                Multiple meetings: <b>08:00AM-11:00AM F; 11:00AM-01:00PM F</b>
+              </span>
             </label>
-            <label>Room
-              <input id="room" maxlength="35" placeholder="e.g., Rm. 404" />
+
+            <label>
+              Room
+              <input id="room" maxlength="35" placeholder="e.g., Rm. 404">
             </label>
-            <label>Instructor
-              <input id="instructor" maxlength="70" placeholder="Optional" />
+
+            <label>
+              Instructor
+              <input id="instructor" maxlength="70" placeholder="Optional">
             </label>
+
             <fieldset class="delivery">
               <legend>Class type</legend>
-              <label class="radio"><input type="radio" name="delivery" value="On-campus" checked /> On-campus</label>
-              <label class="radio"><input type="radio" name="delivery" value="Online" /> Online</label>
+              <label class="radio">
+                <input type="radio" name="delivery" value="On-campus" checked>
+                On-campus
+              </label>
+              <label class="radio">
+                <input type="radio" name="delivery" value="Online">
+                Online
+              </label>
             </fieldset>
-            <label id="meet-field" hidden>Google Meet link
-              <input id="meet-link" type="url" maxlength="250" placeholder="Optional: https://meet.google.com/..." />
-            </label>
-            <label>Color
-              <input id="color" type="color" value="#2563eb" />
-            </label>
           </div>
-          <p class="form-error" id="form-error"></p>
+
+          <p class="form-error" id="form-error" aria-live="polite"></p>
           <button class="primary" type="submit">Add to schedule</button>
         </form>
       </div>
     </section>
 
-    <section class="schedule-section">
+    <section id="schedule-capture" class="schedule-section">
       <div class="print-header">
-        <img src="assets/schedeasy-logo.svg" alt="" />
-        <span></span>
-        <img src="assets/unc-seal.png" alt="" />
-        <div>
-          <strong id="print-name">Student name</strong>
-          <small id="print-course">Course · Year & section · Semester</small>
+        <div class="print-brand">
+          <img src="assets/schedeasy-logo.svg" alt="SchedEasy">
+          <img src="assets/unc-seal.png" alt="UNC seal">
+        </div>
+
+        <div class="student-summary">
+          <p class="section-label">OFFICIAL STUDENT SCHEDULE</p>
+          <strong id="print-name">Student schedule</strong>
+          <span id="print-course">Course · Year & section · Semester</span>
         </div>
       </div>
 
@@ -110,15 +128,22 @@
           <p class="section-label">WEEKLY VIEW</p>
           <h2>My class schedule</h2>
         </div>
+
         <div class="actions">
-          <button id="download-button" class="secondary" type="button">Print / Save PDF</button>
-          <button id="clear-button" class="text-button" type="button">Clear all</button>
+          <button id="download-button" class="primary" type="button">
+            Download as image
+          </button>
+          <button id="clear-button" class="text-button" type="button">
+            Clear all
+          </button>
         </div>
       </div>
 
       <p class="notice" id="conflict-notice" hidden></p>
       <div id="schedule" class="day-cards"></div>
-      <p id="empty-state" class="empty-state">No classes yet. Add one using the form above.</p>
+      <p id="empty-state" class="empty-state">
+        No classes yet. Add one using the form above.
+      </p>
     </section>
 
     <section class="class-list">
@@ -127,7 +152,26 @@
     </section>
   </main>
 
-  <footer>Your data stays in this browser. No account or student number is required.</footer>
+  <footer class="developer-card">
+    <img src="assets/developer-photo.JPG" alt="Renan Alburo">
+
+    <div>
+      <p class="section-label">DEVELOPED BY</p>
+      <strong>Renan Alburo</strong>
+      <span>SchedEasy developer</span>
+    </div>
+
+    <div class="developer-contact">
+      <a href="mailto:renan.alburo@unc.edu.ph">renan.alburo@unc.edu.ph</a>
+      <a href="mailto:renanalburo2004@gmail.com">renanalburo2004@gmail.com</a>
+      <a href="tel:+639670492051">0967 049 2051</a>
+      <a href="https://facebook.com/renanskieeeee" target="_blank" rel="noopener">
+        Facebook: Renan Alburo
+      </a>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

@@ -3,16 +3,30 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="A UNC-themed weekly class schedule organizer." />
+  <meta
+    name="description"
+    content="A UNC-themed weekly class schedule organizer."
+  />
   <title>SchedEasy | UNC Class Schedule Organizer</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <header class="hero">
     <div class="brand-row">
-      <img class="app-logo" src="assets/schedeasy-logo.svg" alt="SchedEasy" />
+      <img
+        class="app-logo"
+        src="assets/schedeasy-logo.svg"
+        alt="SchedEasy"
+      />
+
       <span class="brand-divider"></span>
-      <img class="unc-logo" src="assets/unc-seal.png" alt="University of Nueva Caceres seal" />
+
+      <img
+        class="unc-logo"
+        src="assets/unc-seal.png"
+        alt="University of Nueva Caceres seal"
+      />
+
       <div class="unc-name">
         <strong>UNIVERSITY OF<br>NUEVA CACERES</strong>
         <span>City of Naga, Philippines</span>
@@ -37,17 +51,29 @@
         <div class="student-fields">
           <label>
             Student name
-            <input id="student-name" maxlength="80" placeholder="e.g., Juan Dela Cruz">
+            <input
+              id="student-name"
+              maxlength="80"
+              placeholder="e.g., Juan Dela Cruz"
+            />
           </label>
 
           <label>
             Course
-            <input id="student-course" maxlength="100" placeholder="e.g., BS Information Technology">
+            <input
+              id="student-course"
+              maxlength="100"
+              placeholder="e.g., BS Information Technology"
+            />
           </label>
 
           <label>
             Year & section
-            <input id="student-year" maxlength="50" placeholder="e.g., Third Year – BSIT 3A">
+            <input
+              id="student-year"
+              maxlength="50"
+              placeholder="e.g., Fourth Year – BSIT 4A"
+            />
           </label>
 
           <label>
@@ -58,56 +84,114 @@
               <option value="Summer Term">Summer Term</option>
             </select>
           </label>
+
+          <label>
+            Image layout
+            <select id="download-layout">
+              <option value="portrait">Portrait</option>
+              <option value="landscape">Landscape</option>
+            </select>
+          </label>
         </div>
 
         <form id="class-form">
           <div class="fields">
             <label>
               Subject code
-              <input id="code" required maxlength="20" placeholder="e.g., IT 101">
+              <input
+                id="code"
+                required
+                maxlength="20"
+                placeholder="e.g., IT 101"
+              />
             </label>
 
             <label>
               Subject name
-              <input id="name" required maxlength="70" placeholder="e.g., Introduction to Computing">
+              <input
+                id="name"
+                required
+                maxlength="70"
+                placeholder="e.g., Introduction to Computing"
+              />
             </label>
 
             <label class="wide">
               Schedule from matriculation form
-              <input id="schedule-input" required placeholder="e.g., 10:00AM-11:30AM TTH">
+              <input
+                id="schedule-input"
+                required
+                placeholder="e.g., 10:00AM-11:30AM TTH"
+              />
               <span class="hint">
-                Multiple meetings: <b>08:00AM-11:00AM F; 11:00AM-01:00PM F</b>
+                Multiple meetings:
+                <b>08:00AM-11:00AM F; 11:00AM-01:00PM F</b>
               </span>
             </label>
 
             <label>
               Room
-              <input id="room" maxlength="35" placeholder="e.g., Rm. 404">
+              <input
+                id="room"
+                maxlength="35"
+                placeholder="e.g., Rm. 404"
+              />
             </label>
 
             <label>
               Instructor
-              <input id="instructor" maxlength="70" placeholder="Optional">
+              <input
+                id="instructor"
+                maxlength="70"
+                placeholder="Optional"
+              />
             </label>
 
             <fieldset class="delivery">
               <legend>Class type</legend>
+
               <label class="radio">
-                <input type="radio" name="delivery" value="On-campus" checked>
+                <input
+                  type="radio"
+                  name="delivery"
+                  value="On-campus"
+                  checked
+                />
                 On-campus
               </label>
+
               <label class="radio">
-                <input type="radio" name="delivery" value="Online">
+                <input
+                  type="radio"
+                  name="delivery"
+                  value="Online"
+                />
                 Online
               </label>
             </fieldset>
+
+            <label id="meet-field" hidden>
+              Google Meet link
+              <input
+                id="meet-link"
+                type="url"
+                maxlength="250"
+                placeholder="https://meet.google.com/..."
+              />
+            </label>
           </div>
 
           <p class="form-error" id="form-error" aria-live="polite"></p>
 
           <div class="form-buttons">
             <button class="primary" type="submit">Add to schedule</button>
-            <button id="cancel-edit-button" class="cancel-edit" type="button" hidden>
+
+            <button
+              id="cancel-edit-button"
+              class="cancel-edit"
+              type="button"
+              hidden
+            >
               Cancel edit
             </button>
           </div>
@@ -118,14 +202,16 @@
     <section id="schedule-capture" class="schedule-section">
       <div class="print-header">
         <div class="print-brand">
-          <img src="assets/schedeasy-logo.svg" alt="SchedEasy">
-          <img src="assets/unc-seal.png" alt="UNC seal">
+          <img src="assets/schedeasy-logo.svg" alt="SchedEasy" />
+          <img src="assets/unc-seal.png" alt="UNC seal" />
         </div>
 
         <div class="student-summary">
           <p class="section-label">OFFICIAL STUDENT SCHEDULE</p>
           <strong id="print-name">Student schedule</strong>
-          <span id="print-course">Course · Year & section · Semester</span>
+          <span id="print-course">
+            Course · Year & section · Semester
+          </span>
         </div>
       </div>
 
@@ -139,6 +225,7 @@
           <button id="download-button" class="primary" type="button">
             Download as image
           </button>
+
           <button id="clear-button" class="text-button" type="button">
             Clear all
           </button>
@@ -146,7 +233,9 @@
       </div>
 
       <p class="notice" id="conflict-notice" hidden></p>
+
       <div id="schedule" class="day-cards"></div>
+
       <p id="empty-state" class="empty-state">
         No classes yet. Add one using the form above.
       </p>
@@ -159,7 +248,7 @@
   </main>
 
   <footer class="developer-card">
-    <img src="assets/developer-photo.JPG" alt="Renan Alburo">
+    <img src="assets/developer-photo.JPG" alt="Renan Alburo" />
 
     <div>
       <p class="section-label">DEVELOPED BY</p>
@@ -168,16 +257,28 @@
     </div>
 
     <div class="developer-contact">
-      <a href="mailto:renan.alburo@unc.edu.ph">renan.alburo@unc.edu.ph</a>
-      <a href="mailto:renanalburo2004@gmail.com">renanalburo2004@gmail.com</a>
+      <a href="mailto:renan.alburo@unc.edu.ph">
+        renan.alburo@unc.edu.ph
+      </a>
+
+      <a href="mailto:renanalburo2004@gmail.com">
+        renanalburo2004@gmail.com
+      </a>
+
       <a href="tel:+639670492051">0967 049 2051</a>
-      <a href="https://facebook.com/renanskieeeee" target="_blank" rel="noopener">
+
+      <a
+        href="https://facebook.com/renanskieeeee"
+        target="_blank"
+        rel="noopener"
+      >
         Facebook: Renan Alburo
       </a>
     </div>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

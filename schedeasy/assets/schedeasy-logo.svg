@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 128" role="img" aria-labelledby="title">
+  <title>SchedEasy logo</title>
+  <rect x="6" y="7" width="112" height="112" rx="24" fill="#e51b23"/>
+  <path d="M30 40h64M43 27v25M81 27v25" stroke="#fff" stroke-width="9" stroke-linecap="round"/>
+  <rect x="28" y="40" width="68" height="58" rx="8" fill="#fff"/>
+  <path d="M43 60h12M70 60h12M43 78h12M70 78h12" stroke="#252525" stroke-width="8" stroke-linecap="round"/>
+  <text x="142" y="76" font-family="Arial, Helvetica, sans-serif" font-size="56" font-weight="700" letter-spacing="-2" fill="#f7f7f7">Sched<tspan fill="#e51b23">Easy</tspan></text>
+  <text x="145" y="103" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" letter-spacing="3" fill="#bdbdbd">CLASS SCHEDULE ORGANIZER</text>
+</svg>

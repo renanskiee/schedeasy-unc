@@ -1,13 +1,4 @@
-const DAYS = [
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday',
-  'Sunday'
-];
-
+const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 const form = document.querySelector('#class-form');
 let editingIndex = null;
 
@@ -15,29 +6,22 @@ const profileFields = [
   'student-name',
   'student-course',
   'student-year',
-  'student-semester'
+  'student-semester',
+  'download-layout'
 ];
 
-const classes = JSON.parse(
-  localStorage.getItem('schedeasy-classes') || '[]'
-).map(item => ({
+const classes = JSON.parse(localStorage.getItem('schedeasy-classes') || '[]').map(item => ({
   ...item,
-  meetings: item.meetings || [
-    {
-      start: timeToMinutes(item.start),
-      end: timeToMinutes(item.end),
-      days: item.days
-    }
-  ]
+  meetings: item.meetings || [{
+    start: timeToMinutes(item.start),
+    end: timeToMinutes(item.end),
+    days: item.days
+  }]
 }));
 
 function minutesToDisplay(minutes) {
   const hour = Math.floor(minutes / 60);
-  const minute = minutes % 60;
-
-  return `${hour > 12 ? hour - 12 : hour}:${String(minute).padStart(2, '0')} ${
-    hour >= 12 ? 'PM' : 'AM'
-  }`;
+  return `${hour > 12 ? hour - 12 : hour}:${String(minutes % 60).padStart(2, '0')} ${hour >= 12 ? 'PM' : 'AM'}`;
 }
 
 function timeToMinutes(value) {
@@ -56,30 +40,22 @@ function escapeHtml(value = '') {
 }
 
 function parseTime(value) {
-  const match = value
-    .trim()
-    .toUpperCase()
-    .match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/);
+  const match = value.trim().toUpperCase().match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/);
 
-  if (
-    !match ||
-    Number(match[1]) > 12 ||
-    Number(match[1]) === 0 ||
-    Number(match[2]) > 59
-  ) {
+  if (!match || +match[1] > 12 || +match[1] === 0 || +match[2] > 59) {
     return null;
   }
 
-  let hour = Number(match[1]);
+  let hour = +match[1];
 
   if (match[3] === 'PM' && hour !== 12) hour += 12;
   if (match[3] === 'AM' && hour === 12) hour = 0;
 
-  return hour * 60 + Number(match[2]);
+  return hour * 60 + +match[2];
 }
 
 function parseDays(value) {
-  const map = {
+  const dayMap = {
     M: 'Monday',
     T: 'Tuesday',
     W: 'Wednesday',
@@ -95,18 +71,13 @@ function parseDays(value) {
     .replace(/\s/g, '')
     .match(/TH|[MTWFSN]/g) || [];
 
-  return tokens.map(token => map[token]);
+  return tokens.map(token => dayMap[token]);
 }
 
 function parseSchedule(value) {
-  const entries = value
-    .split(';')
-    .map(item => item.trim())
-    .filter(Boolean);
+  const entries = value.split(';').map(item => item.trim()).filter(Boolean);
 
-  if (!entries.length) {
-    throw new Error('Please enter a schedule.');
-  }
+  if (!entries.length) throw new Error('Please enter a schedule.');
 
   return entries.map(entry => {
     const match = entry.match(
@@ -131,26 +102,25 @@ function parseSchedule(value) {
   });
 }
 
-function getProfile(id) {
+function getValue(id) {
   return document.querySelector(`#${id}`).value.trim();
 }
 
 function updateProfile() {
   document.querySelector('#print-name').textContent =
-    getProfile('student-name') || 'Student schedule';
+    getValue('student-name') || 'Student schedule';
 
   document.querySelector('#print-course').textContent =
     [
-      getProfile('student-course'),
-      getProfile('student-year'),
-      getProfile('student-semester')
+      getValue('student-course'),
+      getValue('student-year'),
+      getValue('student-semester')
     ].filter(Boolean).join(' · ') || 'Course · Year & section · Semester';
 
-  const profile = Object.fromEntries(
-    profileFields.map(id => [id, getProfile(id)])
+  localStorage.setItem(
+    'schedeasy-profile',
+    JSON.stringify(Object.fromEntries(profileFields.map(id => [id, getValue(id)])))
   );
-
-  localStorage.setItem('schedeasy-profile', JSON.stringify(profile));
 }
 
 function saveClasses() {
@@ -158,7 +128,7 @@ function saveClasses() {
 }
 
 function meetingToInput(meeting) {
-  const dayCodes = {
+  const code = {
     Monday: 'M',
     Tuesday: 'T',
     Wednesday: 'W',
@@ -170,39 +140,25 @@ function meetingToInput(meeting) {
 
   return `${minutesToDisplay(meeting.start).replace(' ', '')}-${minutesToDisplay(
     meeting.end
-  ).replace(' ', '')} ${meeting.days.map(day => dayCodes[day]).join('')}`;
+  ).replace(' ', '')} ${meeting.days.map(day => code[day]).join('')}`;
 }
 
-function startEditing(index) {
-  const item = classes[index];
+function toggleMeetField() {
+  const isOnline = document.querySelector(
+    'input[name="delivery"]:checked'
+  ).value === 'Online';
 
-  editingIndex = index;
+  document.querySelector('#meet-field').hidden = !isOnline;
 
-  document.querySelector('#code').value = item.code;
-  document.querySelector('#name').value = item.name;
-  document.querySelector('#schedule-input').value =
-    item.meetings.map(meetingToInput).join('; ');
-  document.querySelector('#room').value = item.room || '';
-  document.querySelector('#instructor').value = item.instructor || '';
-
-  document.querySelector(
-    `input[name="delivery"][value="${item.delivery || 'On-campus'}"]`
-  ).checked = true;
-
-  document.querySelector('#form-error').textContent = '';
-  document.querySelector('.primary[type="submit"]').textContent = 'Update class';
-  document.querySelector('#cancel-edit-button').hidden = false;
-
-  form.scrollIntoView({
-    behavior: 'smooth',
-    block: 'center'
-  });
+  if (!isOnline) {
+    document.querySelector('#meet-link').value = '';
+  }
 }
 
 function cancelEditing() {
   editingIndex = null;
 
-  ['code', 'name', 'schedule-input', 'room', 'instructor'].forEach(id => {
+  ['code', 'name', 'schedule-input', 'room', 'instructor', 'meet-link'].forEach(id => {
     document.querySelector(`#${id}`).value = '';
   });
 
@@ -210,29 +166,76 @@ function cancelEditing() {
     'input[name="delivery"][value="On-campus"]'
   ).checked = true;
 
-  document.querySelector('#form-error').textContent = '';
-  document.querySelector('.primary[type="submit"]').textContent =
-    'Add to schedule';
+  toggleMeetField();
 
+  document.querySelector('#form-error').textContent = '';
+  document.querySelector('.primary[type="submit"]').textContent = 'Add to schedule';
   document.querySelector('#cancel-edit-button').hidden = true;
 }
 
-function meetingHtml(item, meeting) {
+function startEditing(index) {
+  const item = classes[index];
+
+  editingIndex = index;
+  document.querySelector('#code').value = item.code;
+  document.querySelector('#name').value = item.name;
+  document.querySelector('#schedule-input').value =
+    item.meetings.map(meetingToInput).join('; ');
+  document.querySelector('#room').value = item.room || '';
+  document.querySelector('#instructor').value = item.instructor || '';
+  document.querySelector('#meet-link').value = item.meetLink || '';
+
+  document.querySelector(
+    `input[name="delivery"][value="${item.delivery || 'On-campus'}"]`
+  ).checked = true;
+
+  toggleMeetField();
+
+  document.querySelector('#form-error').textContent = '';
+  document.querySelector('.primary[type="submit"]').textContent = 'Update class';
+  document.querySelector('#cancel-edit-button').hidden = false;
+
+  form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function meetingHtml(item, meeting, itemIndex, meetingIndex) {
   const location = item.delivery === 'Online'
     ? 'Online'
     : (item.room || 'Room TBA');
 
+  const meetLink = item.delivery === 'Online' && item.meetLink
+    ? `<a class="meet-link" href="${escapeHtml(item.meetLink)}" target="_blank" rel="noopener">Open Google Meet ↗</a>
+       <span class="meet-qr" data-meet-link="${escapeHtml(item.meetLink)}" data-qr-id="${itemIndex}-${meetingIndex}"></span>`
+    : '';
+
   return `
     <article class="schedule-entry">
-      <span class="entry-time">
-        ${minutesToDisplay(meeting.start)} – ${minutesToDisplay(meeting.end)}
-      </span>
-      <span class="entry-subject">
-        <strong>${escapeHtml(item.code)}</strong> ${escapeHtml(item.name)}
-      </span>
-      <span class="entry-mode">${escapeHtml(location)}</span>
+      <span class="entry-time">${minutesToDisplay(meeting.start)} – ${minutesToDisplay(meeting.end)}</span>
+      <span class="entry-subject"><strong>${escapeHtml(item.code)}</strong> ${escapeHtml(item.name)}</span>
+      <span class="entry-mode">${escapeHtml(location)} ${meetLink}</span>
     </article>
   `;
+}
+
+function renderQRCodes() {
+  if (typeof QRCode === 'undefined') return;
+
+  document.querySelectorAll('.meet-qr').forEach(element => {
+    const url = element.dataset.meetLink;
+
+    if (url && !element.dataset.created) {
+      element.dataset.created = 'true';
+
+      new QRCode(element, {
+        text: url,
+        width: 68,
+        height: 68,
+        colorDark: '#1f1f1f',
+        colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.M
+      });
+    }
+  });
 }
 
 function render() {
@@ -240,12 +243,17 @@ function render() {
 
   document.querySelector('#empty-state').hidden = classes.length !== 0;
 
-  document.querySelector('#schedule').innerHTML = DAYS.map((day, index) => {
+  document.querySelector('#schedule').innerHTML = DAYS.map((day, dayIndex) => {
     const meetings = classes
       .flatMap((item, itemIndex) =>
         item.meetings
           .filter(meeting => meeting.days.includes(day))
-          .map(meeting => ({ item, meeting, itemIndex }))
+          .map((meeting, meetingIndex) => ({
+            item,
+            meeting,
+            itemIndex,
+            meetingIndex
+          }))
       )
       .sort((a, b) => a.meeting.start - b.meeting.start);
 
@@ -266,12 +274,14 @@ function render() {
     });
 
     return `
-      <section class="day-card ${index % 2 ? 'day-card-grey' : 'day-card-white'}">
+      <section class="day-card ${dayIndex % 2 ? 'day-card-grey' : 'day-card-white'}">
         <h3>${day}</h3>
         <div class="day-meetings">
           ${
             meetings.length
-              ? meetings.map(({ item, meeting }) => meetingHtml(item, meeting)).join('')
+              ? meetings.map(({ item, meeting, itemIndex, meetingIndex }) =>
+                meetingHtml(item, meeting, itemIndex, meetingIndex)
+              ).join('')
               : '<p class="no-class">No classes</p>'
           }
         </div>
@@ -286,9 +296,8 @@ function render() {
             <strong>${escapeHtml(item.code)} — ${escapeHtml(item.name)}</strong>
             <p>
               ${item.meetings.map(meeting =>
-                `${meeting.days
-                  .map(day => day === 'Thursday' ? 'TH' : day[0])
-                  .join('')} ${minutesToDisplay(meeting.start)}–${minutesToDisplay(meeting.end)}`
+                `${meeting.days.map(day => day === 'Thursday' ? 'TH' : day[0]).join('')}
+                ${minutesToDisplay(meeting.start)}–${minutesToDisplay(meeting.end)}`
               ).join(' · ')}
               · ${escapeHtml(item.delivery || 'On-campus')}
               · ${escapeHtml(item.room || 'Room TBA')}
@@ -311,6 +320,7 @@ function render() {
     ? `Schedule conflict: ${[...new Set(conflicts)].join('; ')}.`
     : '';
 
+  renderQRCodes();
   saveClasses();
 }
 
@@ -319,12 +329,13 @@ form.addEventListener('submit', event => {
 
   try {
     const classData = {
-      code: getProfile('code'),
-      name: getProfile('name'),
-      meetings: parseSchedule(getProfile('schedule-input')),
-      room: getProfile('room'),
-      instructor: getProfile('instructor'),
-      delivery: document.querySelector('input[name="delivery"]:checked').value
+      code: getValue('code'),
+      name: getValue('name'),
+      meetings: parseSchedule(getValue('schedule-input')),
+      room: getValue('room'),
+      instructor: getValue('instructor'),
+      delivery: document.querySelector('input[name="delivery"]:checked').value,
+      meetLink: getValue('meet-link')
     };
 
     if (editingIndex !== null) {
@@ -334,25 +345,15 @@ form.addEventListener('submit', event => {
       classes.push(classData);
     }
 
-    document.querySelector('#form-error').textContent = '';
-
-    ['code', 'name', 'schedule-input', 'room', 'instructor'].forEach(id => {
-      document.querySelector(`#${id}`).value = '';
-    });
-
-    document.querySelector(
-      'input[name="delivery"][value="On-campus"]'
-    ).checked = true;
-
-    document.querySelector('.primary[type="submit"]').textContent =
-      'Add to schedule';
-
-    document.querySelector('#cancel-edit-button').hidden = true;
-
+    cancelEditing();
     render();
   } catch (error) {
     document.querySelector('#form-error').textContent = error.message;
   }
+});
+
+document.querySelectorAll('input[name="delivery"]').forEach(input => {
+  input.addEventListener('change', toggleMeetField);
 });
 
 document.querySelector('#class-items').addEventListener('click', event => {
@@ -375,6 +376,8 @@ document.querySelector('#class-items').addEventListener('click', event => {
   }
 });
 
+document.querySelector('#cancel-edit-button').addEventListener('click', cancelEditing);
+
 document.querySelector('#clear-button').addEventListener('click', () => {
   if (classes.length && confirm('Remove all classes from this schedule?')) {
     classes.length = 0;
@@ -387,6 +390,9 @@ document.querySelector('#download-button').addEventListener('click', async () =>
   updateProfile();
 
   const button = document.querySelector('#download-button');
+  const layout = getValue('download-layout') || 'portrait';
+  const exportWidth = layout === 'landscape' ? 1500 : 1050;
+
   button.disabled = true;
   button.textContent = 'Preparing image…';
 
@@ -397,15 +403,17 @@ document.querySelector('#download-button').addEventListener('click', async () =>
         scale: 2,
         backgroundColor: '#ffffff',
         useCORS: true,
+        windowWidth: 1600,
 
         onclone: clonedDocument => {
-          const actions = clonedDocument.querySelector(
-            '#schedule-capture .actions'
-          );
+          const capture = clonedDocument.querySelector('#schedule-capture');
+          const actions = capture.querySelector('.actions');
 
-          if (actions) {
-            actions.remove();
-          }
+          capture.classList.add('export-mode', `export-${layout}`);
+          capture.style.width = `${exportWidth}px`;
+          capture.style.maxWidth = 'none';
+
+          if (actions) actions.remove();
         }
       }
     );
@@ -413,10 +421,10 @@ document.querySelector('#download-button').addEventListener('click', async () =>
     const link = document.createElement('a');
 
     link.download = `${
-      (getProfile('student-name') || 'my')
+      (getValue('student-name') || 'my')
         .replace(/[^a-z0-9]/gi, '-')
         .toLowerCase()
-    }-schedule.png`;
+    }-${layout}-schedule.png`;
 
     link.href = canvas.toDataURL('image/png');
     link.click();
@@ -427,10 +435,6 @@ document.querySelector('#download-button').addEventListener('click', async () =>
     button.disabled = false;
     button.textContent = 'Download as image';
   }
-});
-
-document.querySelector('#cancel-edit-button').addEventListener('click', () => {
-  cancelEditing();
 });
 
 const savedProfile = JSON.parse(
@@ -446,4 +450,5 @@ profileFields.forEach(id => {
 });
 
 updateProfile();
+toggleMeetField();
 render();

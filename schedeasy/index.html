@@ -247,6 +247,86 @@
     </section>
   </main>
 
+    <button
+  id="feedback-button"
+  class="feedback-button"
+  type="button"
+  aria-label="Send feedback"
+>
+  💬 <span>Feedback</span>
+</button>
+
+<section
+  id="feedback-modal"
+  class="feedback-modal"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="feedback-title"
+  hidden
+>
+  <div class="feedback-box">
+    <button
+      id="close-feedback-button"
+      class="close-feedback"
+      type="button"
+      aria-label="Close feedback form"
+    >
+      ×
+    </button>
+
+    <p class="section-label">HELP US IMPROVE</p>
+    <h2 id="feedback-title">Send feedback</h2>
+    <p class="muted">
+      Your feedback will be sent to the SchedEasy developer.
+    </p>
+
+    <form id="feedback-form">
+      <label>
+        Name
+        <input
+          id="feedback-name"
+          maxlength="80"
+          placeholder="Optional"
+        />
+      </label>
+
+      <label>
+        Email address
+        <input
+          id="feedback-email"
+          type="email"
+          maxlength="100"
+          placeholder="Optional"
+        />
+      </label>
+
+      <label>
+        Rating
+        <select id="feedback-rating">
+          <option value="5 - Excellent">5 - Excellent</option>
+          <option value="4 - Good">4 - Good</option>
+          <option value="3 - Fair">3 - Fair</option>
+          <option value="2 - Needs improvement">2 - Needs improvement</option>
+          <option value="1 - Poor">1 - Poor</option>
+        </select>
+      </label>
+
+      <label>
+        Feedback
+        <textarea
+          id="feedback-message"
+          required
+          maxlength="1000"
+          placeholder="Tell us what you like or what needs improvement..."
+        ></textarea>
+      </label>
+
+      <button class="primary" type="submit">Send feedback</button>
+    </form>
+  </div>
+</section>
+  
+
   <footer class="developer-card">
     <img src="assets/developer-photo.JPG" alt="Renan Alburo" />
 

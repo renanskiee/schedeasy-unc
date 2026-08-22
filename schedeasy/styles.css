@@ -617,3 +617,126 @@ select:focus {
     margin: 0 0 0 74px;
   }
 }
+
+/* Keep UNC identity visible on mobile */
+@media (max-width: 720px) {
+  .brand-divider {
+    display: none;
+  }
+
+  .unc-name {
+    display: grid;
+    font-size: 0.55rem;
+    letter-spacing: 0.04em;
+  }
+
+  .unc-name span {
+    font-size: 0.48rem;
+  }
+
+  .app-logo {
+    width: min(150px, 42vw);
+  }
+
+  .unc-logo {
+    width: 42px;
+    height: 42px;
+  }
+}
+
+/* Rounded schedule cards in downloaded image */
+.export-mode .day-card {
+  border-radius: 22px;
+}
+
+/* Floating feedback button */
+.feedback-button {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 16px;
+  cursor: pointer;
+  color: #fff;
+  font: 700 0.9rem Arial, sans-serif;
+  background: var(--red);
+  border: 2px solid #fff;
+  border-radius: 999px;
+  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.25);
+}
+
+.feedback-button:hover {
+  background: var(--dark-red);
+}
+
+.feedback-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.feedback-modal[hidden] {
+  display: none;
+}
+
+.feedback-box {
+  position: relative;
+  width: min(500px, 100%);
+  padding: 28px;
+  background: #fff;
+  border-top: 6px solid var(--red);
+  border-radius: 12px;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
+}
+
+.feedback-box h2 {
+  margin: 0;
+}
+
+.feedback-box form {
+  display: grid;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.feedback-box textarea {
+  width: 100%;
+  min-height: 120px;
+  padding: 10px;
+  resize: vertical;
+  color: var(--ink);
+  font: inherit;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+}
+
+.close-feedback {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  padding: 2px 9px;
+  cursor: pointer;
+  color: #555;
+  font-size: 1.8rem;
+  background: transparent;
+  border: 0;
+}
+
+@media (max-width: 720px) {
+  .feedback-button {
+    right: 14px;
+    bottom: 14px;
+    padding: 12px 14px;
+  }
+
+  .feedback-box {
+    padding: 24px 20px;
+  }
+}

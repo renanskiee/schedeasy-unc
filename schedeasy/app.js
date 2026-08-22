@@ -191,11 +191,30 @@ function startEditing(index) {
 
   document.querySelector('#form-error').textContent = '';
   document.querySelector('.primary[type="submit"]').textContent = 'Update class';
+  document.querySelector('#cancel-edit-button').hidden = false;
 
   form.scrollIntoView({
     behavior: 'smooth',
     block: 'center'
   });
+}
+
+function cancelEditing() {
+  editingIndex = null;
+
+  ['code', 'name', 'schedule-input', 'room', 'instructor'].forEach(id => {
+    document.querySelector(`#${id}`).value = '';
+  });
+
+  document.querySelector(
+    'input[name="delivery"][value="On-campus"]'
+  ).checked = true;
+
+  document.querySelector('#form-error').textContent = '';
+  document.querySelector('.primary[type="submit"]').textContent =
+    'Add to schedule';
+
+  document.querySelector('#cancel-edit-button').hidden = true;
 }
 
 function meetingHtml(item, meeting) {
@@ -328,6 +347,8 @@ form.addEventListener('submit', event => {
     document.querySelector('.primary[type="submit"]').textContent =
       'Add to schedule';
 
+    document.querySelector('#cancel-edit-button').hidden = true;
+
     render();
   } catch (error) {
     document.querySelector('#form-error').textContent = error.message;
@@ -345,9 +366,7 @@ document.querySelector('#class-items').addEventListener('click', event => {
     classes.splice(index, 1);
 
     if (editingIndex === index) {
-      editingIndex = null;
-      document.querySelector('.primary[type="submit"]').textContent =
-        'Add to schedule';
+      cancelEditing();
     } else if (editingIndex !== null && index < editingIndex) {
       editingIndex -= 1;
     }
@@ -359,11 +378,7 @@ document.querySelector('#class-items').addEventListener('click', event => {
 document.querySelector('#clear-button').addEventListener('click', () => {
   if (classes.length && confirm('Remove all classes from this schedule?')) {
     classes.length = 0;
-    editingIndex = null;
-
-    document.querySelector('.primary[type="submit"]').textContent =
-      'Add to schedule';
-
+    cancelEditing();
     render();
   }
 });
@@ -399,6 +414,10 @@ document.querySelector('#download-button').addEventListener('click', async () =>
     button.disabled = false;
     button.textContent = 'Download as image';
   }
+});
+
+document.querySelector('#cancel-edit-button').addEventListener('click', () => {
+  cancelEditing();
 });
 
 const savedProfile = JSON.parse(

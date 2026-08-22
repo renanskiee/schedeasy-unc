@@ -396,7 +396,17 @@ document.querySelector('#download-button').addEventListener('click', async () =>
       {
         scale: 2,
         backgroundColor: '#ffffff',
-        useCORS: true
+        useCORS: true,
+
+        onclone: clonedDocument => {
+          const actions = clonedDocument.querySelector(
+            '#schedule-capture .actions'
+          );
+
+          if (actions) {
+            actions.remove();
+          }
+        }
       }
     );
 
@@ -410,6 +420,9 @@ document.querySelector('#download-button').addEventListener('click', async () =>
 
     link.href = canvas.toDataURL('image/png');
     link.click();
+  } catch (error) {
+    alert('Unable to download the schedule image. Please try again.');
+    console.error(error);
   } finally {
     button.disabled = false;
     button.textContent = 'Download as image';

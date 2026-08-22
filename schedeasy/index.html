@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="A simple weekly class schedule organizer for UNC students." />
   <title>SchedEasy | UNC Class Schedule Organizer</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <header class="hero">
@@ -84,6 +84,9 @@
             <label id="meet-field" hidden>Google Meet link
               <input id="meet-link" type="url" maxlength="250" placeholder="Optional: https://meet.google.com/..." />
             </label>
+            <label>Color
+              <input id="color" type="color" value="#2563eb" />
+            </label>
           </div>
           <p class="form-error" id="form-error"></p>
           <button class="primary" type="submit">Add to schedule</button>
@@ -93,12 +96,12 @@
 
     <section class="schedule-section">
       <div class="print-header">
-        <img src="assets/schedeasy-logo.svg" alt="SchedEasy" />
+        <img src="assets/schedeasy-logo.svg" alt="" />
         <span></span>
-        <img src="assets/unc-seal.png" alt="UNC" />
-        <div class="print-info">
-          <strong id="print-name">Student Name</strong>
-          <p id="print-details">Course · Year & Section · Semester</p>
+        <img src="assets/unc-seal.png" alt="" />
+        <div>
+          <strong id="print-name">Student name</strong>
+          <small id="print-course">Course · Year & section · Semester</small>
         </div>
       </div>
 
@@ -124,23 +127,7 @@
     </section>
   </main>
 
-  <footer>
-    <div class="developer-card">
-      <img src="assets/developer-photo.jpg" alt="Renan Alburo" class="dev-avatar" />
-      <div class="dev-info">
-        <p class="dev-label">DEVELOPED BY</p>
-        <h3 class="dev-name">Renan Alburo</h3>
-        <p class="dev-role">Full-Stack Developer / UNC Student</p>
-        <div class="dev-contacts">
-          <span>📧 <a href="mailto:renan.alburo@unc.edu.ph">renan.alburo@unc.edu.ph</a></span>
-          <span>📧 <a href="mailto:renanalburo2004@gmail.com">renanalburo2004@gmail.com</a></span>
-          <span>📱 +63 967 049 2051</span>
-          <span>🌐 <a href="https://facebook.com/renanskieeeee" target="_blank" rel="noopener noreferrer">facebook.com/renanskieeeee</a></span>
-        </div>
-      </div>
-    </div>
-  </footer>
-
+  <footer>Your data stays in this browser. No account or student number is required.</footer>
   <script src="app.js"></script>
 </body>
 </html>

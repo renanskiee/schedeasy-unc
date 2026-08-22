@@ -9,6 +9,7 @@ const DAYS = [
 ];
 
 const form = document.querySelector('#class-form');
+let editingIndex = null;
 
 const profileFields = [
   'student-name',
@@ -156,6 +157,47 @@ function saveClasses() {
   localStorage.setItem('schedeasy-classes', JSON.stringify(classes));
 }
 
+function meetingToInput(meeting) {
+  const dayCodes = {
+    Monday: 'M',
+    Tuesday: 'T',
+    Wednesday: 'W',
+    Thursday: 'TH',
+    Friday: 'F',
+    Saturday: 'S',
+    Sunday: 'N'
+  };
+
+  return `${minutesToDisplay(meeting.start).replace(' ', '')}-${minutesToDisplay(
+    meeting.end
+  ).replace(' ', '')} ${meeting.days.map(day => dayCodes[day]).join('')}`;
+}
+
+function startEditing(index) {
+  const item = classes[index];
+
+  editingIndex = index;
+
+  document.querySelector('#code').value = item.code;
+  document.querySelector('#name').value = item.name;
+  document.querySelector('#schedule-input').value =
+    item.meetings.map(meetingToInput).join('; ');
+  document.querySelector('#room').value = item.room || '';
+  document.querySelector('#instructor').value = item.instructor || '';
+
+  document.querySelector(
+    `input[name="delivery"][value="${item.delivery || 'On-campus'}"]`
+  ).checked = true;
+
+  document.querySelector('#form-error').textContent = '';
+  document.querySelector('.primary[type="submit"]').textContent = 'Update class';
+
+  form.scrollIntoView({
+    behavior: 'smooth',
+    block: 'center'
+  });
+}
+
 function meetingHtml(item, meeting) {
   const location = item.delivery === 'Online'
     ? 'Online'
@@ -234,7 +276,11 @@ function render() {
               ${item.instructor ? ` · ${escapeHtml(item.instructor)}` : ''}
             </p>
           </div>
-          <button class="delete" data-index="${index}">Remove</button>
+
+          <div class="class-actions">
+            <button class="edit" data-index="${index}">Edit</button>
+            <button class="delete" data-index="${index}">Remove</button>
+          </div>
         </div>
       `).join('')
     : '<p class="muted">Your class details will appear here.</p>';
@@ -253,20 +299,34 @@ form.addEventListener('submit', event => {
   event.preventDefault();
 
   try {
-    classes.push({
+    const classData = {
       code: getProfile('code'),
       name: getProfile('name'),
       meetings: parseSchedule(getProfile('schedule-input')),
       room: getProfile('room'),
       instructor: getProfile('instructor'),
       delivery: document.querySelector('input[name="delivery"]:checked').value
-    });
+    };
+
+    if (editingIndex !== null) {
+      classes[editingIndex] = classData;
+      editingIndex = null;
+    } else {
+      classes.push(classData);
+    }
 
     document.querySelector('#form-error').textContent = '';
 
     ['code', 'name', 'schedule-input', 'room', 'instructor'].forEach(id => {
       document.querySelector(`#${id}`).value = '';
     });
+
+    document.querySelector(
+      'input[name="delivery"][value="On-campus"]'
+    ).checked = true;
+
+    document.querySelector('.primary[type="submit"]').textContent =
+      'Add to schedule';
 
     render();
   } catch (error) {
@@ -275,8 +335,23 @@ form.addEventListener('submit', event => {
 });
 
 document.querySelector('#class-items').addEventListener('click', event => {
+  const index = Number(event.target.dataset.index);
+
+  if (event.target.matches('.edit')) {
+    startEditing(index);
+  }
+
   if (event.target.matches('.delete')) {
-    classes.splice(Number(event.target.dataset.index), 1);
+    classes.splice(index, 1);
+
+    if (editingIndex === index) {
+      editingIndex = null;
+      document.querySelector('.primary[type="submit"]').textContent =
+        'Add to schedule';
+    } else if (editingIndex !== null && index < editingIndex) {
+      editingIndex -= 1;
+    }
+
     render();
   }
 });
@@ -284,6 +359,11 @@ document.querySelector('#class-items').addEventListener('click', event => {
 document.querySelector('#clear-button').addEventListener('click', () => {
   if (classes.length && confirm('Remove all classes from this schedule?')) {
     classes.length = 0;
+    editingIndex = null;
+
+    document.querySelector('.primary[type="submit"]').textContent =
+      'Add to schedule';
+
     render();
   }
 });

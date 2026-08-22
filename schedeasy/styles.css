@@ -195,11 +195,18 @@ select:focus {
   color: var(--dark-red);
 }
 
+.form-buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+
 .primary,
-.secondary,
 .text-button,
 .delete,
-.edit {
+.edit,
+.cancel-edit {
   padding: 10px 14px;
   cursor: pointer;
   font: 700 0.9rem Arial, sans-serif;
@@ -213,10 +220,6 @@ select:focus {
   background: var(--red);
 }
 
-.primary {
-  margin-top: 12px;
-}
-
 .primary:hover,
 .edit:hover {
   background: var(--dark-red);
@@ -226,6 +229,17 @@ select:focus {
 .delete {
   color: var(--dark-red);
   background: transparent;
+}
+
+.cancel-edit {
+  color: #555;
+  background: #e7e7e7;
+  border: 1px solid #aaa;
+}
+
+.cancel-edit:hover {
+  color: #fff;
+  background: #555;
 }
 
 .schedule-section,
@@ -365,9 +379,28 @@ select:focus {
 }
 
 .entry-mode {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 7px;
   color: #555;
   font-size: 0.8rem;
-  white-space: nowrap;
+  text-align: right;
+}
+
+.meet-link {
+  color: var(--dark-red);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.meet-link:hover {
+  text-decoration: underline;
+}
+
+.meet-qr {
+  display: none;
 }
 
 .no-class {
@@ -456,6 +489,51 @@ select:focus {
   text-decoration: underline;
 }
 
+/* Fixed desktop-style export, even when downloaded from a phone */
+.export-mode {
+  box-shadow: none;
+}
+
+.export-mode .actions {
+  display: none;
+}
+
+.export-mode .meet-link {
+  display: none;
+}
+
+.export-mode .meet-qr {
+  display: block;
+  width: 68px;
+  height: 68px;
+}
+
+.export-mode .entry-mode {
+  display: grid;
+  justify-content: end;
+}
+
+.export-mode .schedule-entry:has(.meet-qr) {
+  grid-template-columns: 185px 1fr auto 68px;
+}
+
+.export-landscape .day-cards {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.export-landscape .day-card {
+  grid-template-columns: 140px 1fr;
+}
+
+.export-landscape .schedule-entry {
+  grid-template-columns: 120px 1fr auto;
+}
+
+.export-landscape .schedule-entry:has(.meet-qr) {
+  grid-template-columns: 120px 1fr auto 68px;
+}
+
 @media (max-width: 720px) {
   .hero {
     padding: 24px;
@@ -515,7 +593,17 @@ select:focus {
 
   .schedule-entry {
     grid-template-columns: 1fr;
-    gap: 2px;
+    gap: 3px;
+  }
+
+  .entry-mode {
+    justify-content: flex-start;
+    text-align: left;
+  }
+
+  .class-item {
+    align-items: flex-start;
+    flex-direction: column;
   }
 
   .developer-card {
@@ -528,29 +616,4 @@ select:focus {
     width: calc(100% - 74px);
     margin: 0 0 0 74px;
   }
-}
-
-.form-buttons {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.form-buttons .primary {
-  margin-top: 0;
-}
-
-.cancel-edit {
-  padding: 10px 14px;
-  cursor: pointer;
-  color: #555;
-  font: 700 0.9rem Arial, sans-serif;
-  background: #e7e7e7;
-  border: 1px solid #aaa;
-  border-radius: 4px;
-}
-
-.cancel-edit:hover {
-  color: #fff;
-  background: #555;
 }

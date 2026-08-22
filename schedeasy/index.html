@@ -1,78 +1,133 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="A simple weekly class schedule organizer for UNC students." />
-    <title>SchedEasy | UNC Class Schedule Organizer</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <header class="hero">
-      <div class="brand-row">
-        <img class="app-logo" src="assets/schedeasy-logo.svg" alt="SchedEasy" />
-        <span class="brand-divider" aria-hidden="true"></span>
-        <img class="unc-logo" src="assets/unc-seal.png" alt="University of Nueva Caceres seal" />
-        <div class="unc-name"><strong>UNIVERSITY OF<br />NUEVA CACERES</strong><span>City of Naga, Philippines</span></div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="A simple weekly class schedule organizer for UNC students." />
+  <title>SchedEasy | UNC Class Schedule Organizer</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="hero">
+    <div class="brand-row">
+      <img class="app-logo" src="assets/schedeasy-logo.svg" alt="SchedEasy" />
+      <span class="brand-divider"></span>
+      <img class="unc-logo" src="assets/unc-seal.png" alt="University of Nueva Caceres seal" />
+      <div class="unc-name">
+        <strong>UNIVERSITY OF<br />NUEVA CACERES</strong>
+        <span>City of Naga, Philippines</span>
       </div>
-      <div class="hero-copy"><p class="eyebrow">STUDENT SCHEDULE PORTAL</p><p class="intro">Turn your matriculation details into a clean weekly schedule.</p></div>
-    </header>
+    </div>
+    <div class="hero-copy">
+      <p class="eyebrow">STUDENT SCHEDULE PORTAL</p>
+      <p class="intro">Turn your matriculation details into a clean weekly schedule.</p>
+    </div>
+  </header>
 
-    <main>
-      <section class="card form-card" aria-labelledby="form-title">
-        <div>
-          <p class="section-label">CREATE YOUR SCHEDULE</p>
-          <h2 id="form-title">Add a class</h2>
-          <p class="muted">Enter the details from your matriculation form.</p>
+  <main>
+    <section class="card form-card">
+      <div>
+        <p class="section-label">CREATE YOUR SCHEDULE</p>
+        <h2>Add a class</h2>
+        <p class="muted">Enter the details from your matriculation form.</p>
+      </div>
+
+      <div>
+        <div class="student-fields">
+          <label>Student name
+            <input id="student-name" maxlength="80" placeholder="e.g., Juan Dela Cruz" />
+          </label>
+          <label>Course
+            <input id="student-course" maxlength="100" placeholder="e.g., BS Information Technology" />
+          </label>
+          <label>Year & section
+            <input id="student-year" maxlength="50" placeholder="e.g., Third Year – BSIT 3A" />
+          </label>
+          <label>Semester
+            <select id="student-semester">
+              <option value="First Semester">First Semester</option>
+              <option value="Second Semester">Second Semester</option>
+              <option value="Summer Term">Summer Term</option>
+            </select>
+          </label>
+          <label>PDF layout
+            <select id="pdf-layout">
+              <option value="portrait">Portrait – one day per row</option>
+              <option value="landscape">Landscape – two-column cards</option>
+            </select>
+          </label>
         </div>
-        <div>
-          <div class="student-fields" aria-label="Student details">
-            <label>Student name <input id="student-name" maxlength="80" placeholder="e.g., Juan Dela Cruz" /></label>
-            <label>Course <input id="student-course" maxlength="100" placeholder="e.g., BS Information Technology" /></label>
-            <label>Year level <input id="student-year" maxlength="30" placeholder="e.g., Third Year" /></label>
-          </div>
-          <form id="class-form">
+
+        <form id="class-form">
           <div class="fields">
-            <label>Subject code <input id="code" required maxlength="20" placeholder="e.g., IT 101" /></label>
-            <label>Subject name <input id="name" required maxlength="70" placeholder="e.g., Introduction to Computing" /></label>
-            <label class="wide">Schedule from matriculation form <input id="schedule-input" required placeholder="e.g., 10:00AM-11:30AM TTH" /><span class="hint">For more than one meeting, separate them with a semicolon: <b>08:00AM-11:00AM F; 11:00AM-01:00PM F</b></span></label>
-            <label>Room <input id="room" maxlength="35" placeholder="e.g., Rm. 404" /></label>
-            <label>Instructor <input id="instructor" maxlength="70" placeholder="Optional" /></label>
-            <fieldset class="delivery"><legend>Class type</legend><label class="radio"><input type="radio" name="delivery" value="On-campus" checked /> On-campus</label><label class="radio"><input type="radio" name="delivery" value="Online" /> Online</label></fieldset>
-            <label id="meet-field" hidden>Google Meet link <input id="meet-link" type="url" maxlength="250" placeholder="Optional: https://meet.google.com/..." /></label>
-            <label>Color <input id="color" type="color" value="#2563eb" /></label>
+            <label>Subject code
+              <input id="code" required maxlength="20" placeholder="e.g., IT 101" />
+            </label>
+            <label>Subject name
+              <input id="name" required maxlength="70" placeholder="e.g., Introduction to Computing" />
+            </label>
+            <label class="wide">Schedule from matriculation form
+              <input id="schedule-input" required placeholder="e.g., 10:00AM-11:30AM TTH" />
+              <span class="hint">Multiple meetings: <b>08:00AM-11:00AM F; 11:00AM-01:00PM F</b></span>
+            </label>
+            <label>Room
+              <input id="room" maxlength="35" placeholder="e.g., Rm. 404" />
+            </label>
+            <label>Instructor
+              <input id="instructor" maxlength="70" placeholder="Optional" />
+            </label>
+            <fieldset class="delivery">
+              <legend>Class type</legend>
+              <label class="radio"><input type="radio" name="delivery" value="On-campus" checked /> On-campus</label>
+              <label class="radio"><input type="radio" name="delivery" value="Online" /> Online</label>
+            </fieldset>
+            <label id="meet-field" hidden>Google Meet link
+              <input id="meet-link" type="url" maxlength="250" placeholder="Optional: https://meet.google.com/..." />
+            </label>
+            <label>Color
+              <input id="color" type="color" value="#2563eb" />
+            </label>
           </div>
-          <p class="form-error" id="form-error" role="alert"></p>
+          <p class="form-error" id="form-error"></p>
           <button class="primary" type="submit">Add to schedule</button>
-          </form>
-        </div>
-      </section>
+        </form>
+      </div>
+    </section>
 
-      <section class="schedule-section" aria-labelledby="schedule-title">
-        <div class="print-header" aria-hidden="true"><img src="assets/schedeasy-logo.svg" alt="" /><span></span><img src="assets/unc-seal.png" alt="" /><div><strong id="print-name">Student name</strong><small id="print-course">Course · Year level</small></div></div>
-        <div class="schedule-head">
-          <div>
-            <p class="section-label">WEEKLY VIEW</p>
-            <h2 id="schedule-title">My class schedule</h2>
-          </div>
-          <div class="actions">
-            <button id="download-button" class="secondary" type="button">Print / Save PDF</button>
-            <button id="clear-button" class="text-button" type="button">Clear all</button>
-          </div>
+    <section class="schedule-section">
+      <div class="print-header">
+        <img src="assets/schedeasy-logo.svg" alt="" />
+        <span></span>
+        <img src="assets/unc-seal.png" alt="" />
+        <div>
+          <strong id="print-name">Student name</strong>
+          <small id="print-course">Course · Year & section · Semester</small>
         </div>
-        <p class="notice" id="conflict-notice" hidden></p>
-        <div class="schedule-wrap">
-          <div id="schedule" class="schedule" aria-label="Weekly class schedule"></div>
-        </div>
-        <p id="empty-state" class="empty-state">No classes yet. Add one using the form above.</p>
-      </section>
+      </div>
 
-      <section class="class-list" aria-labelledby="list-title">
-        <h2 id="list-title">Class details</h2>
-        <div id="class-items"></div>
-      </section>
-    </main>
-    <footer>Your data stays in this browser. No account or student number is required.</footer>
-    <script src="app.js"></script>
-  </body>
+      <div class="schedule-head">
+        <div>
+          <p class="section-label">WEEKLY VIEW</p>
+          <h2>My class schedule</h2>
+        </div>
+        <div class="actions">
+          <button id="download-button" class="secondary" type="button">Print / Save PDF</button>
+          <button id="clear-button" class="text-button" type="button">Clear all</button>
+        </div>
+      </div>
+
+      <p class="notice" id="conflict-notice" hidden></p>
+      <div id="schedule" class="day-cards"></div>
+      <p id="empty-state" class="empty-state">No classes yet. Add one using the form above.</p>
+    </section>
+
+    <section class="class-list">
+      <h2>Class details</h2>
+      <div id="class-items"></div>
+    </section>
+  </main>
+
+  <footer>Your data stays in this browser. No account or student number is required.</footer>
+  <script src="app.js"></script>
+</body>
 </html>
